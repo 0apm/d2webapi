@@ -144,3 +144,12 @@ class Dota2API:
         url = URL.format(game_id=DOTA_ID, method='GetMatchHistory')
         return self.request(url, params, filename=f'league_{league_id}_matches.json', force=force)
     
+    def get_team_info_by_teamid(self, start_at_team_id: int, teams_requested: int=1, force: bool = False):
+        params = {
+            'start_at_team_id': start_at_team_id,
+            'teams_requested': teams_requested,
+            'key': self.api_key,
+        }
+
+        url = URL.format(game_id=DOTA_ID, method='GetTeamInfoByTeamID')
+        return self.request(url, params, filename=f'teams_{start_at_team_id}_{teams_requested}.json', force=force)
