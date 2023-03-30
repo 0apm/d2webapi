@@ -2,7 +2,7 @@
 name = "d2webapi"
 version = "0.1.0"
 description = ""
-authors = ["0apm"]
+authors = ["0apm" <0apm.tv@gmail.com>]
 readme = "README.md"
 
 [tool.poetry.dependencies]
