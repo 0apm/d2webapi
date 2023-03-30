@@ -3,3 +3,4 @@ d2webapi.code-workspace
 .env
 __pychache__
 *.py[cod]
+dotaapi_cache
