@@ -1,2 +1,1 @@
-Simple wrapper 
-poetry, hello?
+Simple Steam Web API wrapper for dota2
