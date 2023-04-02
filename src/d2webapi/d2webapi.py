@@ -43,6 +43,8 @@ DOTA_ID = 570
 DOTA_PRIVATE_BETA = 816
 DOTA_BETA_TEST = 205790
 URL = 'https://api.steampowered.com/IDOTA2Match_{game_id}/{method}/v1'
+newURL = 'https://api.steampowered.com/IDOTA2{prefix}_{game_id}/{method}/v1'
+WEB_URL = 'https://www.dota2.com/webapi/{interface}/{method}/v001'
 URL_STATS = 'https://api.steampowered.com/IDOTA2MatchStats_{game_id}/{method}/v1'
 
 ###############################################################################
@@ -73,8 +75,6 @@ class Dota2API:
         params: dict,
         *,  # learning - Знак * в данном случае используется для указания, 
             # что после него все последующие параметры должны быть заданы только с явным указанием их имени (keyword-only arguments)
-        post: bool = False,
-        data: dict = None,
         filename: str = None,
         force: bool = False
     ) -> Any:
@@ -101,6 +101,8 @@ class Dota2API:
         params_log = {k: v for k, v in params.items() if k != 'key'}
         LOGGER.info(f"Query Params: {params_log}")
         response = self._session.get(url, params=params)
+        if not response:
+            return None
         content = response.content.decode("utf-8")
         
         try:
@@ -111,7 +113,7 @@ class Dota2API:
             )
             return None
 
-        if 'error' in json_data.get('result'):
+        if 'result' in json_data and 'error' in json_data.get('result'):
             LOGGER.warning(f"Could not fetch '{url}' ({json_data['result']['error']}).")
             return None
 
@@ -153,3 +155,44 @@ class Dota2API:
 
         url = URL.format(game_id=DOTA_ID, method='GetTeamInfoByTeamID')
         return self.request(url, params, filename=f'teams_{start_at_team_id}_{teams_requested}.json', force=force)
+
+    def web_get_single_team_info(self, team_id: int, force: bool = False):
+        params = {
+            'team_id': team_id,
+        }
+
+        url = WEB_URL.format(interface='IDOTA2Teams', method='GetSingleTeamInfo')
+        return self.request(url, params, filename=f'web_teams_{team_id}.json', force=force)
+    
+    def web_get_player_info(self, player_id: int, force: bool = False):
+        params = {
+            'account_id': player_id,
+        }
+
+        url = WEB_URL.format(interface='IDOTA2DPC', method='GetPlayerInfo')
+        return self.request(url, params, filename=f'web_players_{player_id}.json', force=force)
+    
+    def web_get_league_data(self, league_id: int, force: bool = False):
+        params = {
+            'league_id': league_id,
+        }
+
+        url = WEB_URL.format(interface='IDOTA2League', method='GetLeagueData')
+        return self.request(url, params, filename=f'web_leagues_{league_id}.json', force=force)
+    
+    def web_get_DPC_standings(self, registration_period: int, force: bool = False):
+        params = {
+           'registration_period': registration_period,
+        }
+
+        url = WEB_URL.format(interface='IDOTA2DPC', method='GetDPCStandings')
+        return self.request(url, params, filename=f'web_dpc_standings_{registration_period}.json', force=force)
+    
+    def get_event_portraits(self, league_id: int, force: bool = False):
+        params = {
+            'league_id': league_id,
+            'key': self.api_key,
+        }
+
+        url = URL.format(prefix='League', game_id=DOTA_ID, method='GetEventPortraits')
+        return self.request(url, params, filename=f'event_portraits_{league_id}.json', force=force)
