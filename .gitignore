@@ -6,3 +6,4 @@ __pychache__
 *.py[cod]
 dotaapi_cache
 .DS_Store
+images/
