@@ -20,7 +20,7 @@ def main():
     #api.web_get_league_data(15199) # Pinnacle Cup: Malta Vibes #1
     #api.web_get_league_data(15137) # EEU DPC
     #api.web_get_DPC_standings(8) #spring season???
-    api.get_event_portraits(15137)
+    #api.get_event_portraits(15137)
 
 
 if __name__ == "__main__":
