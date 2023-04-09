@@ -46,6 +46,7 @@ URL = 'https://api.steampowered.com/IDOTA2Match_{game_id}/{method}/v1'
 newURL = 'https://api.steampowered.com/IDOTA2{prefix}_{game_id}/{method}/v1'
 WEB_URL = 'https://www.dota2.com/webapi/{interface}/{method}/v001'
 URL_STATS = 'https://api.steampowered.com/IDOTA2MatchStats_{game_id}/{method}/v1'
+OD_URL= 'https://api.opendota.com/api/{method}'
 
 ###############################################################################
 
@@ -196,3 +197,7 @@ class Dota2API:
 
         url = URL.format(prefix='League', game_id=DOTA_ID, method='GetEventPortraits')
         return self.request(url, params, filename=f'event_portraits_{league_id}.json', force=force)
+    
+    def od_get_all_leagues(self, force: bool = False):
+        url = OD_URL.format(method='leagues')
+        return self.request(url, {}, filename=f'od_leagues.json', force=force)

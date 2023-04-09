@@ -21,6 +21,7 @@ def main():
     #api.web_get_league_data(15137) # EEU DPC
     #api.web_get_DPC_standings(8) #spring season???
     #api.get_event_portraits(15137)
+    api.od_get_all_leagues()
 
 
 if __name__ == "__main__":
